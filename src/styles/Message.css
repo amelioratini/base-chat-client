@@ -1,0 +1,19 @@
+.message {
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 60%;
+    word-wrap: break-word;
+}
+
+.current-user {
+    background: #e0f7fa;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.other-participant {
+    background: #fce4ec;
+    align-self: flex-start;
+    text-align: left;
+}
