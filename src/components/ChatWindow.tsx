@@ -5,17 +5,27 @@ import "../styles/ChatWindow.css";
 import {fetchMessages} from "../api/chatApi";
 import TypingIndicator from "./TypingIndicator";
 import {debounce} from "lodash";
+import {ChatMessage} from "../types/ChatMessage";
+import {ChatUser} from "../types/ChatUser";
 
-export interface ChatMessage {
-    id: string,
-    text: string,
-    sender: string
-}
+const PARTICIPANTS: Record<string, ChatUser> = {
+    "user": {
+        id: "john",
+        name: "John Doe",
+        profilePicture: "https://upload.wikimedia.org/wikipedia/commons/5/57/Witold_Conti_-_Profile_portrait_-_1930.jpg",
+    },
+    "other": {
+        id: "jane",
+        name: "Jane Smith",
+        profilePicture: "https://upload.wikimedia.org/wikipedia/commons/1/1d/Elsie_Ferguson_portrait%2C_profile%2C_White.jpg",
+    },
+};
+
 const ChatWindow = () => {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [isTyping, setIsTyping] = useState(false);
-    const [currentSender, setCurrentSender] = useState("user"); // Track participant
-    const [currentReceiver, setCurrentReceiver] = useState("other"); // Track participant
+    const [currentSender, setCurrentSender] = useState<ChatUser>(PARTICIPANTS["user"]); // Track participant
+    const [currentReceiver, setCurrentReceiver] = useState<ChatUser>(PARTICIPANTS["other"]); // Track participant
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -45,24 +55,22 @@ const ChatWindow = () => {
     };
 
     const switchParticipant = () => {
-        setCurrentSender((prev) => (prev === "user" ? "other" : "user"));
-        setCurrentReceiver((prev) => (prev === "user" ? "other" : "user"));
+        setCurrentSender((prev) => (prev === PARTICIPANTS["user"] ? PARTICIPANTS["other"] : PARTICIPANTS["user"]));
+        setCurrentReceiver((prev) => (prev === PARTICIPANTS["user"] ? PARTICIPANTS["other"] : PARTICIPANTS["user"]));
     };
 
     const handleTyping = () => {
         setIsTyping(true);
 
-
-        // Reset typing state after 2 seconds of inactivity
         debouncedSetIsTyping(false);
     };
 
     return (
         <div className="chat-window">
             <div className="header">
-                <h2>{}</h2>
+                <h2>Chat</h2>
                 <button onClick={switchParticipant}>
-                    Switch to {currentSender === "user" ? "Other" : "User"}
+                    Switch to {currentSender === PARTICIPANTS["user"] ? PARTICIPANTS["other"].name : PARTICIPANTS["user"].name}
                 </button>
             </div>
             {loading && <p>Loading...</p>}

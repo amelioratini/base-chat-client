@@ -1,18 +1,18 @@
-import {ChatMessage} from "../components/ChatWindow";
+import {ChatMessage} from "../types/ChatMessage";
 
-let CHAT_DB: ChatMessage[] = [];
+const CHAT_DB: ChatMessage[] = [];
 
 export const fetchMessages = async (): Promise<{data: ChatMessage[]}> => {
     await delay(3000)
     return Promise.resolve({data: CHAT_DB});
 }
 
-export const sendMessage = async (message: ChatMessage): Promise<void> => {
-    CHAT_DB = [...CHAT_DB, message];
+export const sendMessage = (message: ChatMessage): void => {
+    CHAT_DB.push(message);
 }
 
 
-const delay = (milliseconds: number) => {
+const delay = async (milliseconds: number) => {
     return new Promise(resolve => {
         setTimeout(resolve, milliseconds);
     });

@@ -1,8 +1,8 @@
 import React, {useState, FormEvent, useEffect, useRef} from "react";
 import "../styles/MessageInput.css";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import "react-quill-new/dist/quill.snow.css";
 import EmojiPicker, {EmojiClickData} from "emoji-picker-react";
+import ReactQuill from "react-quill-new";
 
 interface MessageInputProps {
     onSend: (arg: string) => void
@@ -10,51 +10,49 @@ interface MessageInputProps {
 }
 const MessageInput = ({ onSend, onTyping }: MessageInputProps) => {
     const emojiPickerRef = useRef<HTMLDivElement>(null);
-    const [input, setInput] = useState("");
+    const [inputText, setInputText] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     const handleEmojiClick = (emojiObject: EmojiClickData) => {
-        setInput((prevText) => `${prevText}${emojiObject.emoji}`);
+        setInputText((prevText) => `${prevText}${emojiObject.emoji}`);
         setShowEmojiPicker(false);
     };
 
-    const handleSend = (event?: FormEvent<HTMLFormElement>) => {
-        event?.preventDefault();
-
-        onSend(input);
-        setInput("");
+    const handleSend = (formEvent?: FormEvent<HTMLFormElement>) => {
+        onSend(inputText);
+        setInputText("");
+        formEvent?.preventDefault();
     };
 
     const handleChange = (value: string) => {
-        setInput(value);
+        setInputText(value);
         if (onTyping) onTyping();
     }
 
     const handleDocumentClick = (mouseEvent: MouseEvent) => {
-        console.log("Handling event");
         const target = (mouseEvent.currentTarget as Document).activeElement;
         if(!emojiPickerRef.current?.contains(target) && showEmojiPicker) {
             setShowEmojiPicker(false);
-        }
-    }
-
-    const handleDocumentKeyDown = (keyEvent: KeyboardEvent) => {
-        if(keyEvent.key === "Escape" && showEmojiPicker) {
-            setShowEmojiPicker(false);
-        } else if(keyEvent.key === "Enter") {
-            handleSend();
+            mouseEvent.preventDefault();
         }
     }
 
     useEffect(() => {
         document.addEventListener("click", handleDocumentClick, true);
-        document.addEventListener("keydown", handleDocumentKeyDown);
 
         return () => {
             document.removeEventListener("click", handleDocumentClick);
-            document.removeEventListener("keydown", handleDocumentKeyDown);
         }
-    });
+    }, []);
+
+    const handleKeyDownQuill = (keyEvent: React.KeyboardEvent<HTMLDivElement>) => {
+        if(keyEvent.key === "Escape" && showEmojiPicker) {
+            setShowEmojiPicker(false);
+        } else if(keyEvent.key === "Enter" && !keyEvent.shiftKey) {
+            handleSend();
+            keyEvent.preventDefault();
+        }
+    };
 
     return (
         <form className="message-input" onSubmit={handleSend}>
@@ -71,13 +69,16 @@ const MessageInput = ({ onSend, onTyping }: MessageInputProps) => {
                         <EmojiPicker open={showEmojiPicker} onEmojiClick={handleEmojiClick}/>
                     </div>
             </div>
+            <div className={"quill-wrapper-custom"} onKeyDownCapture={handleKeyDownQuill}>
             <ReactQuill
-                value={input}
+                value={inputText}
                 onChange={handleChange}
                 placeholder="Type a message..."
                 className="rich-text-editor"
+                theme="snow"
             />
-            <button type="submit">Send</button>
+            </div>
+            <button className="submitButton" type="submit">Send</button>
         </form>
     );
 };
