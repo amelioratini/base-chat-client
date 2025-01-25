@@ -1,6 +1,5 @@
-import React, {useEffect, useRef, useState} from "react";
+import React from "react";
 import {Quill} from "react-quill-new";
-import EmojiPicker, {EmojiClickData} from "emoji-picker-react";
 
 const Size: any = Quill.import("formats/size");
 Size.whitelist = ["extra-small", "small", "medium", "large"];
@@ -16,18 +15,6 @@ Font.whitelist = [
     "lucida"
 ];
 Quill.register(Font, true);
-
-
-export const modules = {
-    toolbar: {
-        container: "#toolbar",
-    },
-    history: {
-        delay: 500,
-        maxStack: 100,
-        userOnly: true
-    }
-};
 
 export const formats = [
     "header",
@@ -51,40 +38,10 @@ export const formats = [
 ];
 
 interface MessageInputToolbarProps {
-    handleEmojiInput: (emojiObject: EmojiClickData) => void;
+    handleEmojiButtonClick: () => void;
 }
- const MessageInputToolbar = ({handleEmojiInput}: MessageInputToolbarProps) => {
-    const emojiPickerRef = useRef<HTMLDivElement>(null);
-    const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
-
-    const handleDocumentClick = (mouseEvent: MouseEvent) => {
-        const target = (mouseEvent.currentTarget as Document).activeElement;
-        if(!emojiPickerRef.current?.contains(target) && showEmojiPicker) {
-            setShowEmojiPicker(false);
-            mouseEvent.preventDefault();
-        }
-    }
-
-    useEffect(() => {
-        document.addEventListener("click", handleDocumentClick, true);
-
-        return () => {
-            document.removeEventListener("click", handleDocumentClick);
-        }
-    }, []);
-
-    const handleKeyDown = (keyEvent: React.KeyboardEvent<HTMLDivElement>) => {
-        if(keyEvent.key === "Escape" && showEmojiPicker) {
-            setShowEmojiPicker(false);
-        }
-    };
-
-    const handleEmojiClick = (emojiObject: EmojiClickData) => {
-        handleEmojiInput(emojiObject);
-        setShowEmojiPicker(false);
-    }
-
-    return <div id="toolbar" onKeyDownCapture={handleKeyDown}>
+ const MessageInputToolbar = ({handleEmojiButtonClick}: MessageInputToolbarProps) => {
+    return <div id="toolbar">
     <span className="ql-formats">
       <select className="ql-font" defaultValue="arial">
         <option value="arial">Arial</option>
@@ -143,13 +100,10 @@ interface MessageInputToolbarProps {
       <button
           type="button"
           className="emoji-button"
-          onClick={() => setShowEmojiPicker((prev) => !prev)}
+          onClick={() => handleEmojiButtonClick()}
       >
                     😀
                 </button>
-                    <div ref={emojiPickerRef} className="emoji-picker">
-                        <EmojiPicker open={showEmojiPicker} onEmojiClick={handleEmojiClick}/>
-                    </div>
     </span>
     </div>
 };

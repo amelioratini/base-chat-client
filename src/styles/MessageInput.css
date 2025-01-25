@@ -42,3 +42,13 @@
     flex-direction: column;
     justify-content: center;
 }
+
+.emoji-picker {
+    position: absolute;
+    z-index: 100;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    right: 10%;
+    top: 10%;
+}
