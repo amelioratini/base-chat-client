@@ -6,22 +6,6 @@
     background-color: slategrey;
 }
 
-.emoji-button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    align-self: flex-end;
-}
-
-.emoji-picker {
-    position: absolute;
-    z-index: 1000;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-}
-
 .rich-text-editor {
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -34,18 +18,27 @@
     border-radius: 4px;
 }
 
-.submitButton {
+.submit-button {
+    position: absolute;
     padding: 8px 16px;
     background: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    justify-self: flex-end;
+    align-self: flex-end;
+    margin-right: 16px
 }
 
 .ql-container {
     height: 85px;
     max-height: 85px;
     overflow: auto;
+}
+
+.chat-input-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
