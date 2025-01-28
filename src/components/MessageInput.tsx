@@ -10,13 +10,17 @@ interface MessageInputProps {
     onTyping: () => void
 }
 const MessageInput = ({ onSend, onTyping }: MessageInputProps) => {
+    const emojiPickerRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<ReactQuill>(null);
     const [inputText, setInputText] = useState("");
+    const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
 
     const handleEmojiClick = (emojiObject: EmojiClickData) => {
         setInputText((prevText) => prevText.endsWith("</p>") ?
             `${prevText.substring(0, prevText.length - 4)}${emojiObject.emoji}</p>`
             : `${prevText}${emojiObject.emoji}`);
         setShowEmojiPicker(false);
+        inputRef.current?.focus();
     };
 
     const handleSend = (mouseEvent?: React.MouseEvent) => {
@@ -54,9 +58,6 @@ const MessageInput = ({ onSend, onTyping }: MessageInputProps) => {
         }
     };
 
-    const emojiPickerRef = useRef<HTMLDivElement>(null);
-    const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
-
     const handleDocumentClick = (mouseEvent: MouseEvent) => {
         const target = (mouseEvent.currentTarget as Document).activeElement;
         if(!emojiPickerRef.current?.contains(target) && showEmojiPicker) {
@@ -87,6 +88,7 @@ const MessageInput = ({ onSend, onTyping }: MessageInputProps) => {
                     className="rich-text-editor"
                     theme="snow"
                     modules={modules}
+                    ref={inputRef}
                 />
                 <button className="submit-button" onClick={handleSend}>Send</button>
             </div>
