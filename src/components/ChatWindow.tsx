@@ -1,12 +1,61 @@
 import React, {useEffect, useState} from "react";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
-import "../styles/ChatWindow.css";
 import {fetchMessages} from "../api/chatApi";
 import TypingIndicator from "./TypingIndicator";
 import {debounce} from "lodash";
 import {ChatMessage} from "../types/ChatMessage";
 import {ChatUser} from "../types/ChatUser";
+import styled from "styled-components";
+
+const ChatWindowWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    width: 60%;
+    margin: auto;
+    border-width: 1px;
+    border-style: solid;
+    border-color: ${(props) => props.theme.colors.border};
+    border-radius: ${(props) => props.theme.borderRadius};
+`;
+
+const ChatWindowHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: ${(props) => props.theme.spacing.medium};
+    background: ${(props) => props.theme.colors.primary};
+    border-width: 1px;
+    border-style: solid;
+    border-color: ${(props) => props.theme.colors.border};
+`;
+
+const HeaderButton = styled.button`
+    padding: ${(props) => props.theme.spacing.small} ${(props) => props.theme.spacing.medium};
+    background: ${(props) => props.theme.colors.secondary};
+    color: white;
+    border: none;
+    border-radius: ${(props) => props.theme.borderRadius};
+    cursor: pointer;
+
+    &:hover {
+        background: ${(props) => props.theme.colors.secondaryLight};
+    }
+`;
+
+const MessagesWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: ${(props) => props.theme.spacing.small}
+    overflow-y: auto;
+    background: ${(props) => props.theme.colors.background};
+`;
+
+const ChatError = styled.p`
+    color: ${(props) => props.theme.colors.error};
+`;
 
 const PARTICIPANTS: Record<string, ChatUser> = {
     "user": {
@@ -66,16 +115,16 @@ const ChatWindow = () => {
     };
 
     return (
-        <div className="chat-window">
-            <div className="header">
+        <ChatWindowWrapper>
+            <ChatWindowHeader>
                 <h2>Chat</h2>
-                <button onClick={switchParticipant}>
+                <HeaderButton onClick={switchParticipant}>
                     Switch to {currentSender === PARTICIPANTS["user"] ? PARTICIPANTS["other"].name : PARTICIPANTS["user"].name}
-                </button>
-            </div>
+                </HeaderButton>
+            </ChatWindowHeader>
             {loading && <p>Loading...</p>}
-            {error && <p className="error">{error}</p>}
-            <div className="messages">
+            {error && <ChatError>{error}</ChatError>}
+            <MessagesWrapper>
                 {messages.map((msg) => (
                     <Message
                         key={msg.id}
@@ -84,10 +133,10 @@ const ChatWindow = () => {
                         currentParticipant={currentSender}
                     />
                 ))}
-            </div>
+            </MessagesWrapper>
             {isTyping && <TypingIndicator participant={currentSender} />}
             <MessageInput onSend={handleSend} onTyping={handleTyping} />
-        </div>
+        </ChatWindowWrapper>
     );
 };
 

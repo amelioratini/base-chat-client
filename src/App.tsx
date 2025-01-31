@@ -1,12 +1,15 @@
 import React from "react";
 import ChatWindow from "./components/ChatWindow";
-import "./App.css";
+import {ThemeProvider} from "styled-components";
+import {theme} from "./styles/Theme";
+import GlobalStyle from "./styles/Global";
 
 const App = () => {
   return (
-      <div className="app">
+      <ThemeProvider theme={theme}>
+          <GlobalStyle/>
         <ChatWindow />
-      </div>
+      </ThemeProvider>
   );
 };
 

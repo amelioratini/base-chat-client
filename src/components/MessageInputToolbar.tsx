@@ -16,27 +16,6 @@ Font.whitelist = [
 ];
 Quill.register(Font, true);
 
-export const formats = [
-    "header",
-    "font",
-    "size",
-    "bold",
-    "italic",
-    "underline",
-    "align",
-    "strike",
-    "script",
-    "blockquote",
-    "background",
-    "list",
-    "bullet",
-    "indent",
-    "link",
-    "image",
-    "color",
-    "code-block"
-];
-
 interface MessageInputToolbarProps {
     handleEmojiButtonClick: () => void;
 }
@@ -99,7 +78,6 @@ interface MessageInputToolbarProps {
         <span className="ql-formats">
       <button
           type="button"
-          className="emoji-button"
           onClick={() => handleEmojiButtonClick()}
       >
                     😀

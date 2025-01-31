@@ -1,9 +1,46 @@
 import React, {useEffect, useRef, useState} from "react";
-import "../styles/MessageInput.css";
 import "react-quill-new/dist/quill.snow.css";
 import ReactQuill from "react-quill-new";
 import MessageInputToolbar from "./MessageInputToolbar";
 import EmojiPicker, {EmojiClickData} from "emoji-picker-react";
+import styled from "styled-components";
+
+const SendButton = styled.button`
+    position: absolute;
+    background: ${(props) => props.theme.colors.primary};
+    color: white;
+    border: none;
+    padding: ${(props) => props.theme.spacing.small} ${(props) => props.theme.spacing.medium};
+    border-radius: ${(props) => props.theme.borderRadius};
+    margin-right: ${(props) => props.theme.spacing.medium};
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    align-self: flex-end;
+
+  &:hover {
+    background: ${(props) => props.theme.colors.primaryLight};
+  }
+`;
+
+const ChatInputWrapper = styled.div`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    `;
+
+const EmojiPickerWrapper = styled.div`
+    position: absolute;
+    z-index: 100;
+    background: white;
+    border-width: 1px;
+    border-style: solid;
+    border-color: ${(props) => props.theme.colors.border}; 
+    border-radius: ${(props) => props.theme.borderRadius};
+    right: 20%;
+    top: 10%;
+    `;
 
 interface MessageInputProps {
     onSend: (arg: string) => void
@@ -75,24 +112,23 @@ const MessageInput = ({ onSend, onTyping }: MessageInputProps) => {
     }, []);
 
     return (
-        <div>
-            <div ref={emojiPickerRef} className="emoji-picker">
+        <>
+            <EmojiPickerWrapper ref={emojiPickerRef}>
                 <EmojiPicker open={showEmojiPicker} onEmojiClick={handleEmojiClick}/>
-            </div>
+            </EmojiPickerWrapper>
             <MessageInputToolbar handleEmojiButtonClick={handleEmojiButtonClick}/>
-            <div className="chat-input-wrapper" onKeyDownCapture={handleKeyDown}>
+            <ChatInputWrapper onKeyDownCapture={handleKeyDown}>
                 <ReactQuill
                     value={inputText}
                     onChange={handleChange}
                     placeholder="Type a message..."
-                    className="rich-text-editor"
                     theme="snow"
                     modules={modules}
                     ref={inputRef}
                 />
-                <button className="submit-button" onClick={handleSend}>Send</button>
-            </div>
-        </div>
+                <SendButton onClick={handleSend}>Send</SendButton>
+            </ChatInputWrapper>
+        </>
     );
 };
 
