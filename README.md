@@ -1,6 +1,27 @@
-# Getting Started with Create React App
+## Demo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Chat client demo](./public/demo.png)
+
+## Project structure
+
+```bash
+├── public
+└── src
+    ├── api
+    ├── components
+    ├── styles
+    └── types
+```
+
+**public** - Public Web resources
+
+**src/api** - Backend API source. Plug your Backend code here
+
+**src/components** - UI components source
+
+**src/styles** - Style source. The project uses *styled-components* - therefore modify the Global.ts and Theme.ts files for adjust the theme
+
+**src/types** - DTO types source. Adjust to match your Backend DTOs. When using an Openapi source generator, this would be a suitable generated sources target directory
 
 ## Available Scripts
 
@@ -39,8 +60,6 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+### `npm run format`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Runs prettier to format the project's .ts, .tsx and .css extension files. Modify the .prettierrc file to adjust the formatting rules
