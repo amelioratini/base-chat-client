@@ -16,7 +16,16 @@
     "react-dom": "^18.3.1",
     "react-quill-new": "^3.3.3",
     "react-scripts": "5.0.1",
-    "styled-components": "^6.1.14"
+    "styled-components": "^6.1.14",
+    "serialize-javascript": ">=6.0.2"
+  },
+  "overrides": {
+    "rollup-plugin-terser": {
+      "serialize-javascript": "6.0.2"
+    },
+    "css-select": {
+      "nth-check": "2.0.1"
+    }
   },
   "scripts": {
     "start": "react-scripts start",
