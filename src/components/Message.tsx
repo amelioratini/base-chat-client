@@ -51,6 +51,8 @@ const MessageBubble = styled.div<MessageBubbleProps>`
       ? props.theme.shadows.messageCurrentUser
       : props.theme.shadows.messageOtherUser};
   position: relative;
+  word-wrap: break-word;
+  list-style-position: inside;
 
   &:after {
     content: "";
@@ -102,6 +104,10 @@ const MessageBubble = styled.div<MessageBubbleProps>`
       rotate: -45deg;
       z-index: 2;
     `}
+  }
+
+  & ol {
+    padding-left: 1.5rem;
   }
 `;
 
