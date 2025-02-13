@@ -1,20 +1,20 @@
 import React from "react";
-import parse from "html-react-parser"
-import {ChatUser} from "../types/ChatUser";
+import parse from "html-react-parser";
+import { ChatUser } from "../types/ChatUser";
 import styled from "styled-components";
 
 interface MessageContainerProps {
-    isCurrentUser: boolean
+  isCurrentUser: boolean;
 }
 
 interface MessageBubbleProps {
-    isCurrentUser: boolean
+  isCurrentUser: boolean;
 }
 
 interface MessageProps {
-    text: string,
-    sender: ChatUser,
-    currentParticipant: ChatUser
+  text: string;
+  sender: ChatUser;
+  currentParticipant: ChatUser;
 }
 
 const MessageContainer = styled.div<MessageContainerProps>`
@@ -32,16 +32,19 @@ const ProfilePicture = styled.img`
 `;
 
 const MessageContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    max-width: 60%;
-    position: relative;
-    `;
+  display: flex;
+  flex-direction: column;
+  max-width: 60%;
+  position: relative;
+`;
 const MessageBubble = styled.div<MessageBubbleProps>`
   background-color: ${(props) =>
-    props.isCurrentUser ? props.theme.colors.primary : props.theme.colors.secondary};
+    props.isCurrentUser
+      ? props.theme.colors.primary
+      : props.theme.colors.secondary};
   color: ${(props) => props.theme.colors.textPrimary};
-  padding: ${(props) => props.theme.spacing.small} ${(props) => props.theme.spacing.medium};
+  padding: ${(props) => props.theme.spacing.small}
+    ${(props) => props.theme.spacing.medium};
   border-radius: ${(props) => props.theme.borderRadius};
   box-shadow: ${(props) => props.theme.shadows.message};
   position: relative;
@@ -54,7 +57,7 @@ const MessageBubble = styled.div<MessageBubbleProps>`
     width: 0;
 
     ${(props) =>
-    props.isCurrentUser
+      props.isCurrentUser
         ? `
       border-width: 14px 0 14px 14px;
       border-color: transparent transparent transparent ${props.theme.colors.primary};
@@ -77,18 +80,23 @@ const SenderName = styled.div`
 `;
 
 const Message = ({ text, sender, currentParticipant }: MessageProps) => {
-    const isCurrentUser = sender.id === currentParticipant.id;
+  const isCurrentUser = sender.id === currentParticipant.id;
 
-    const parsedHTML = parse(text);
-    return (
-        <MessageContainer isCurrentUser={isCurrentUser}>
-            <ProfilePicture src={sender.profilePicture} alt={`${sender.name}'s profile`} />
-            <MessageContent>
-                <SenderName>{sender.name}</SenderName>
-                <MessageBubble isCurrentUser={isCurrentUser}>{parsedHTML}</MessageBubble>
-            </MessageContent>
-        </MessageContainer>
-    );
+  const parsedHTML = parse(text);
+  return (
+    <MessageContainer isCurrentUser={isCurrentUser}>
+      <ProfilePicture
+        src={sender.profilePicture}
+        alt={`${sender.name}'s profile`}
+      />
+      <MessageContent>
+        <SenderName>{sender.name}</SenderName>
+        <MessageBubble isCurrentUser={isCurrentUser}>
+          {parsedHTML}
+        </MessageBubble>
+      </MessageContent>
+    </MessageContainer>
+  );
 };
 
 export default Message;
