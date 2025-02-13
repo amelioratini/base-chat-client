@@ -23,7 +23,8 @@ export const theme = {
   },
   borderRadius: "12px",
   shadows: {
-    message: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    messageCurrentUser: "inset 0 2px 4px #A9FF0A",
+    messageOtherUser: "inset 0 2px 4px #C50AFF",
     input: "0 2px 6px rgba(0, 0, 0, 0.2)",
   },
 };
